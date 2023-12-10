@@ -18,8 +18,6 @@ setup(
     install_requires=[
         "absl-py",
         "flax",
-        "jax",
-        "jaxlib",
         "matplotlib",
         "ml_collections",
         "numpy",
