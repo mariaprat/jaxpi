@@ -23,6 +23,7 @@ setup(
         "numpy",
         "optax",
         "scipy",
+	"tabulate",
         "wandb",
     ],
     extras_require={

@@ -104,3 +104,24 @@ class TimeSpaceSampler(BaseSampler):
         batch = jnp.concatenate([temporal_batch, spatial_batch], axis=1)
 
         return batch
+
+
+class ResidualSampler(BaseSampler):
+    def __init__(self, dom, batch_size, rng_key=random.PRNGKey(1234)):
+        super().__init__(batch_size, rng_key)
+        self.dom = dom
+        self.dim = 1
+        self.pool = random.uniform(rng_key,
+                                   shape=(self.batch_size, self.dim),
+                                   minval=self.dom[0],
+                                   maxval=self.dom[1])
+
+    @partial(pmap, static_broadcasted_argnums=(0,))
+    def data_generation(self, key):
+        "Generates data containing batch_size samples"
+        idx = random.choice(key, self.pool.shape[0], shape=(self.batch_size,))
+        batch = self.pool[idx, :]
+
+        return batch
+
+        
